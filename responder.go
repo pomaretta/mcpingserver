@@ -32,6 +32,7 @@ type PingResponse struct {
 	Players     PlayersEntry `json:"players"`
 	Description interface{}  `json:"description"`
 	Faviconb64  string       `json:"favicon,omitempty"`
+	Status      string       `json:"status,omitempty"`
 }
 
 type LegacyPingResponse struct {
