@@ -17,5 +17,5 @@ for combo in BUILD_COMBINATIONS:
     if combo[0] is "windows":
         build_location += ".exe" # Gotta love windows!
     print("Building for {} {} - {}".format(*combo, build_location))
-    build_cmd = "env GOOS={} GOARCH={} go build -o {} .".format(*combo, build_location)
+    build_cmd = "env GOOS={} GOARCH={} go build cmd/main.go -o {} .".format(*combo, build_location)
     subprocess.check_call(build_cmd, shell=True)

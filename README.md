@@ -21,7 +21,7 @@ be achieved by running the following set of commands:
 
     git clone https://github.com/Ichbinjoe/MCPingServer.git
     cd MCPingServer
-    go build .
+    go build cmd/main.go -o mcpingserver
 
 This results in an executable to be created within the current directory.
 

@@ -5,6 +5,8 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+
+	"github.com/pomaretta/mcpingserver"
 )
 
 func main() {
@@ -19,27 +21,27 @@ func main() {
 
 	flag.Parse()
 
-	kickMsg := TranslateColorCodes(*kickMsgFlg)
-	pingMotd := TranslateColorCodes(*pingMotdFlg)
+	kickMsg := mcpingserver.TranslateColorCodes(*kickMsgFlg)
+	pingMotd := mcpingserver.TranslateColorCodes(*pingMotdFlg)
 
-	kickJson := ConvertMCChat(kickMsg)
-	motdJson := ConvertMCChat(pingMotd)
+	kickJson := mcpingserver.ConvertMCChat(kickMsg)
+	motdJson := mcpingserver.ConvertMCChat(pingMotd)
 
 	faviconb64 := readFavicon(*faviconLocation)
 
-	pingResponse := PingResponse{
-		VersionEntry{*serverVersionName, uint(*serverVersionNum)},
-		PlayersEntry{*playerCap, *playerCnt, []PlayerEntry{}},
+	pingResponse := mcpingserver.PingResponse{
+		mcpingserver.VersionEntry{*serverVersionName, uint(*serverVersionNum)},
+		mcpingserver.PlayersEntry{*playerCap, *playerCnt, []mcpingserver.PlayerEntry{}},
 		motdJson,
 		faviconb64,
 	}
 
-	legacyPing := LegacyPingResponse{
+	legacyPing := mcpingserver.LegacyPingResponse{
 		*playerCnt, *playerCap, *serverVersionNum, *serverVersionName, pingMotd}
 
-	responder := CreateSimpleResponder(&pingResponse, kickJson, &legacyPing)
+	responder := mcpingserver.CreateSimpleResponder(&pingResponse, kickJson, &legacyPing)
 
-	pingServer := CreatePingServer(*bindAddr, responder)
+	pingServer := mcpingserver.CreatePingServer(*bindAddr, responder)
 
 	fmt.Println("Binding to", *bindAddr)
 	err := pingServer.Bind()
