@@ -170,11 +170,9 @@ func (p *PlayerConn) readPacket() (*bufio.Reader, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	if packlen > 256 || packlen < 0 {
+	if packlen == 0 {
 		return nil, io.ErrShortBuffer
 	}
-
 	return bufio.NewReader(io.LimitReader(p.inBuf, int64(packlen))), nil
 }
 
