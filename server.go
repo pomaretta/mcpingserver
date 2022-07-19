@@ -11,11 +11,16 @@ var sectionChar = "§"
 type PingServer struct {
 	bindAddr  string
 	Responder Responder // only responderhook can be hotswapped
+	timeout   int       // in seconds
 	bindConn  net.Listener
 }
 
 func CreatePingServer(bindAddr string, hook Responder) *PingServer {
 	return &PingServer{bindAddr, hook, nil}
+}
+
+func (ps *PingServer) SetResponseTimeout(timeout int) {
+	ps.timeout = timeout
 }
 
 func (ps *PingServer) Bind() (err error) {
@@ -41,7 +46,7 @@ func (ps *PingServer) AcceptConnection(handler PingServerErrorHandler) error {
 	if err != nil {
 		return err
 	}
-	conn.SetDeadline(time.Now().Add(5 * time.Second))
+	conn.SetDeadline(time.Now().Add(time.Duration(ps.timeout) * time.Second))
 
 	connInBuffer := bufio.NewReader(conn)
 
