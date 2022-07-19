@@ -23,6 +23,10 @@ func (ps *PingServer) Bind() (err error) {
 	return
 }
 
+func (ps *PingServer) Close() error {
+	return ps.bindConn.Close()
+}
+
 type PingServerErrorHandler func(error)
 
 func (ps *PingServer) AcceptConnections(handler PingServerErrorHandler) (err error) {
