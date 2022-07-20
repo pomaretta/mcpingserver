@@ -16,7 +16,11 @@ type PingServer struct {
 }
 
 func CreatePingServer(bindAddr string, hook Responder) *PingServer {
-	return &PingServer{bindAddr, hook, nil}
+	return &PingServer{
+		bindAddr:  bindAddr,
+		Responder: hook,
+		bindConn:  nil,
+	}
 }
 
 func (ps *PingServer) SetResponseTimeout(timeout int) {
