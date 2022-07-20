@@ -46,7 +46,9 @@ func (ps *PingServer) AcceptConnection(handler PingServerErrorHandler) error {
 	if err != nil {
 		return err
 	}
-	conn.SetDeadline(time.Now().Add(time.Duration(ps.timeout) * time.Second))
+	if ps.timeout > 0 {
+		conn.SetDeadline(time.Now().Add(time.Duration(ps.timeout) * time.Second))
+	}
 
 	connInBuffer := bufio.NewReader(conn)
 
